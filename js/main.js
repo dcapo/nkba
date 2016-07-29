@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import nba from 'nba';
-import NorthKoreanScoring from './NorthKoreanScoring';
+import Game from './Game';
 
 nba.usePromises();
 const game = {gameId: "0021401082"};
@@ -8,13 +8,15 @@ const game = {gameId: "0021401082"};
 let vue = new Vue({
     el: '#app',
     data: {
-        json: ''
+        score: '',
+        plays: []
     }
 });
 
 nba.stats.playByPlay(game).then((data) => {
-    let scoring = new NorthKoreanScoring(data.playByPlay);
-    vue.json = scoring.calculate();
+    let game = new Game(data.playByPlay);
+    vue.score = game.computeNorthKoreanScore();
+    vue.plays = game.plays;
 }, (error) => {
-    vue.json = error;
+    vue.score = error;
 })

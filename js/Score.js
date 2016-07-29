@@ -1,3 +1,5 @@
+import * as constants from "./Constants";
+
 export default class {
     constructor(home, away) {
         this.home = home;
@@ -13,11 +15,23 @@ export default class {
         return this.home - this.away;
     }
 
-    scoreHome(points) {
+    isTied() {
+        return this.home === this.away;
+    }
+
+    tallyHome(points) {
         this.home += points;
     }
 
-    scoreAway(points) {
+    tallyAway(points) {
         this.away += points;
+    }
+
+    tally(team, points) {
+        if (team === constants.teams.HOME) {
+            this.tallyHome(points);
+        } else {
+            this.tallyAway(points);
+        }
     }
 }
