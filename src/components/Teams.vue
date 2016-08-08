@@ -6,7 +6,7 @@
             </a>
             <span class="heading--title">NKBA Scoring</span>
         </div>
-        <div class="welcome alert alert-success">
+        <div class="welcome alert">
             <div><strong>Welcome to the NKBA!</strong></div>
             <span>
                 View scores and stats according to North Korean basketball rules!
@@ -80,6 +80,8 @@ export default {
 
     .welcome {
         margin-top: 10px;
+        background-color: white;
+        color: black;
     }
 
     a {
