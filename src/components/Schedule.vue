@@ -1,8 +1,8 @@
 <template>
     <div class="schedule">
         <div class="heading">
-            <img class="team-icon" :src="teamIconUrl" />
-            <h1>{{ team.teamName }}</h1>
+            <img class="heading--team-icon" :src="teamIconUrl" />
+            <h2 class="heading--team-name">{{ team.teamName }}</h2>
         </div>
         <div class="form-group">
             <label for="seasonSelect">Season</label>
@@ -20,22 +20,25 @@
             </select>
         </div>
         <div class="alert alert-danger" v-show="readyToDisplay && !schedule.length">No Data Found...</div>
-        <table class="table table-striped table-bordered table-hover" v-show="schedule.length">
-            <thead>
-                <tr>
-                    <th>Date</th> 
-                    <th>Matchup</th> 
-                    <th>Win/Loss</th> 
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="game in schedule" v-link="{ name: 'game', params: { id: game.gameId }}">
-                    <td>{{ date(game) }}</td>
-                    <td>{{ matchup(game) }}</td>
-                    <td>{{ game.wl }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div v-show="schedule.length">
+            <p>Select a game below to view its North Korean scoring.</p>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Date</th> 
+                        <th>Matchup</th> 
+                        <th>Win/Loss</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="game in schedule" v-link="{ name: 'game', params: { id: game.gameId }}">
+                        <td>{{ date(game) }}</td>
+                        <td>{{ matchup(game) }}</td>
+                        <td>{{ game.wl }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -133,11 +136,17 @@ export default {
         display: flex;
         align-items: center;
         padding: 10px 0px;
+        margin: 10px 0px;
     }
 
-    .heading .team-icon {
-        height: 40px;
-        width: 40px;
+    .heading--team-icon {
+        height: 30px;
+        width: 30px;
         margin-right: 10px;
+    }
+    
+    .heading--team-name {
+        margin: 0px;
+        flex: 1;
     }
 </style>
