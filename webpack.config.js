@@ -1,43 +1,66 @@
-/* global __dirname */
-
-var path = require('path');
-
-var webpack = require('webpack');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-
-var dir_js = path.resolve(__dirname, 'js');
-var dir_html = path.resolve(__dirname, 'html');
-var dir_build = path.resolve(__dirname, 'build');
+var path = require('path')
+var webpack = require('webpack')
 
 module.exports = {
-    entry: path.resolve(dir_js, 'main.js'),
-    output: {
-        path: dir_build,
-        filename: 'bundle.js'
-    },
-    devServer: {
-        contentBase: dir_build,
-    },
-    module: {
-        loaders: [
-            {
-                loader: 'babel-loader',
-                test: dir_js,
-            }
-        ]
-    },
-    plugins: [
-        // Simply copies the files over
-        new CopyWebpackPlugin([
-            { from: dir_html } // to: output.path
-        ]),
-        // Avoid publishing files when compilation fails
-        new webpack.NoErrorsPlugin()
-    ],
-    stats: {
-        // Nice colored output
-        colors: true
-    },
-    // Create Sourcemaps for the bundle
-    devtool: 'source-map'
-};
+  entry: './src/main.js',
+  output: {
+    path: path.resolve(__dirname, './dist'),
+    publicPath: '/dist/',
+    filename: 'build.js'
+  },
+  resolveLoader: {
+    root: path.join(__dirname, 'node_modules'),
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.vue$/,
+        loader: 'vue'
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.json$/,
+        loader: 'json'
+      },
+      {
+        test: /\.html$/,
+        loader: 'vue-html'
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        loader: 'url',
+        query: {
+          limit: 10000,
+          name: '[name].[ext]?[hash]'
+        }
+      }
+    ]
+  },
+  devServer: {
+    historyApiFallback: true,
+    noInfo: true
+  },
+  devtool: '#eval-source-map'
+}
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports.devtool = '#source-map'
+  // http://vue-loader.vuejs.org/en/workflow/production.html
+  module.exports.plugins = (module.exports.plugins || []).concat([
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.optimize.OccurenceOrderPlugin()
+  ])
+}

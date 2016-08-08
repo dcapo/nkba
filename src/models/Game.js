@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import Play from './Play';
-import ScoreCalculator from './ScoreCalculator';
-import * as constants from './Constants';
+import * as constants from '../Constants';
 
 export default class {
     constructor(data) {
@@ -40,10 +39,5 @@ export default class {
             period: playData.period,
             time: playData.pctimestring
         });
-    }
-
-    computeNorthKoreanScore() {
-        let calculator = new ScoreCalculator(this);
-        return calculator.calculateNorthKoreanScore();
     }
 }
