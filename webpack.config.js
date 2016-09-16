@@ -1,11 +1,15 @@
 var path = require('path')
 var webpack = require('webpack')
 
+var paths = { 
+    dist: path.resolve(__dirname, './dist')
+};
+
 module.exports = {
   entry: './src/main.js',
   output: {
-    path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
+    path: paths.dist,
+    publicPath: '/nkba/',
     filename: 'build.js'
   },
   resolveLoader: {
@@ -42,6 +46,7 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    contentBase: paths.dist,
     noInfo: true
   },
   devtool: '#eval-source-map'
@@ -49,7 +54,6 @@ module.exports = {
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
-  // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
